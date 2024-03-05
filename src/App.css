@@ -36,10 +36,13 @@
     text-align: center;
 }
 .floor .elevator {
-    background-color: burlywood;
+    background-color: rgb(235, 190, 132);
     width: 90%;
     height: 82%;
     border: 2px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .arrow-container {
@@ -60,9 +63,16 @@
 .first-floor_btn {
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
+    justify-content: space-around;
 }
 
 .arrow-icon {
-    font-size: 40px;
+    font-size: 50px;
+}
+
+h3 {
+    border: 3px solid beige;
+    padding: 10px 20px 10px 20px;
+    border-radius: 15px;
+    background-color: rgb(247, 127, 42);
 }

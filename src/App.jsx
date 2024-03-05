@@ -14,18 +14,29 @@ function App() {
       return;
     }
 
-    if (id == 0) {
+    if (id == 0 && selectedFloor == 0) {
       setMovingUp(true);
       setTimeout(()=> {
         setSelectedFloor(2);
         setMovingUp(false);
       }, 10000);
+    } else if (id == 1 >= selectedFloor) {
+      if (selectedFloor == id) {
+        setMovingUp(true);
+        setTimeout(() => {
+          setSelectedFloor(2);
+          setMovingUp(false);
+        }, 5000);
+      } else {
+        setMovingUp(true);
+        setTimeout(()=> {
+          setSelectedFloor(1);
+          setMovingUp(false);
+        }, 5000);
+      }
     } else {
-      setMovingUp(true);
-      setTimeout(()=> {
-        setSelectedFloor(1);
-        setMovingUp(false);
-      }, 5000);
+      console.log("UP");
+      return;
     }
     
   };
@@ -36,18 +47,29 @@ function App() {
       return;
     }
 
-    if (id == 2) {
+    if (id == 2 && selectedFloor == 2) {
       setMovingDown(true);
       setTimeout(()=> {
         setSelectedFloor(0);
         setMovingDown(false);
       }, 10000);
+    } else if (id == 1 && id <= selectedFloor) {
+      if (selectedFloor == id) {
+        setMovingDown(true);
+        setTimeout(()=> {
+          setSelectedFloor(0);
+          setMovingDown(false);
+        }, 5000);
+      } else {
+        setMovingDown(true);
+        setTimeout(()=> {
+          setSelectedFloor(1);
+          setMovingDown(false);
+        }, 5000);
+      }
     } else {
-      setMovingDown(true);
-      setTimeout(()=> {
-        setSelectedFloor(1);
-        setMovingDown(false);
-      }, 5000);
+      console.log("DOWN!")
+      return;
     }
   };
 
@@ -56,15 +78,21 @@ function App() {
       <div className="elevator-container">
         <div className="floor second-floor">
           <div className="floor-name">Level 2</div>
-          {selectedFloor == 2 ? <div className="elevator"></div> : null}
+          {selectedFloor == 2 ? <div className="elevator">
+            <h3>Elevator</h3>
+          </div> : null}
         </div>
         <div className="floor first-floor">
           <div className="floor-name">Level 1</div>
-          {selectedFloor == 1 ? <div className="elevator"></div> : null}
+          {selectedFloor == 1 ? <div className="elevator">
+          <h3>Elevator</h3>
+          </div> : null}
         </div>
         <div className="floor ground-floor">
           <div className="floor-name">Level 0</div>
-          {selectedFloor == 0 ? <div className="elevator"></div> : null}
+          {selectedFloor == 0 ? <div className="elevator">
+          <h3>Elevator</h3>
+          </div> : null}
         </div>
       </div>
 
@@ -76,13 +104,13 @@ function App() {
           />
         </div>
         <div className="btn first-floor_btn">
-          <IoArrowDownCircleSharp
-            className="arrow-icon"
-            onClick={() => handleDownArrow(1)}
-          />
           <IoArrowUpCircleSharp
             className="arrow-icon"
             onClick={() => handleUpArrow(1)}
+          />
+          <IoArrowDownCircleSharp
+            className="arrow-icon"
+            onClick={() => handleDownArrow(1)}
           />
         </div>
         <div className="btn" id="0">
