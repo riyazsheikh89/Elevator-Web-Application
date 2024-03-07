@@ -1,12 +1,15 @@
 import { IoArrowUpCircleSharp, IoArrowDownCircleSharp } from "react-icons/io5";
+import { useEffect, useState } from "react";
+import audioFile from "./assets/elevator-sound.mp3";
 import "./App.css";
-import { useState } from "react";
 
 function App() {
   const [selectedFloor, setSelectedFloor] = useState(0);
   const [movingUp, setMovingUp] = useState(false);
   const [movingDown, setMovingDown] = useState(false);
   const [clickedArrow, setClickedArrow] = useState(null);
+  const [timerId, setTimerId] = useState(null);
+  const [audio] = useState(new Audio(`${audioFile}`));
 
   const handleUpArrow = (id) => {
     // while the lift is moving DOWN, UP button should not work
@@ -17,11 +20,12 @@ function App() {
 
     if (id == 0 && selectedFloor == 0) {
       setMovingUp(true);
-      setTimeout(()=> {
+      const timer = setTimeout(()=> {
         setSelectedFloor(2);
         setMovingUp(false);
         setClickedArrow(null);
       }, 10000);
+      setTimerId(timer);
     } else if (id == 1 && id >= selectedFloor) {
       if (selectedFloor == id) {
         setMovingUp(true);
@@ -30,19 +34,38 @@ function App() {
           setMovingUp(false);
           setClickedArrow(null);
         }, 5000);
-      } else {
-        setMovingUp(true);
+      } else if (!movingUp) {
+        //
         setTimeout(()=> {
           setSelectedFloor(1);
           setMovingUp(false);
           setClickedArrow(null);
         }, 5000);
+      } else {
+        setMovingUp(true);
+        setTimeout(()=> {
+          clearTimeout(timerId);
+          setSelectedFloor(1);
+          setTimeout(() => {
+            setSelectedFloor(2);
+            setMovingUp(false);
+            setClickedArrow(null);
+          }, 5000);
+        }, 5000);
       }
+    } else if(id == 1) {
+      //
+      setMovingDown(true);
+      setTimeout(() => {
+        setSelectedFloor(1);
+        setMovingDown(false);
+        setClickedArrow(null);
+      }, 5000);
     } else {
-      setMovingUp(true);
+      setMovingDown(true);
       setTimeout(() => {
         setSelectedFloor(0);
-        setMovingUp(false);
+        setMovingDown(false);
         setClickedArrow(null);
       }, 10000);
     }
@@ -57,11 +80,12 @@ function App() {
 
     if (id == 2 && selectedFloor == 2) {
       setMovingDown(true);
-      setTimeout(()=> {
+      const timer = setTimeout(()=> {
         setSelectedFloor(0);
         setMovingDown(false);
         setClickedArrow(null);
       }, 10000);
+      setTimerId(timer);
     } else if (id == 1 && id <= selectedFloor) {
       if (selectedFloor == id) {
         setMovingDown(true);
@@ -70,19 +94,54 @@ function App() {
           setMovingDown(false);
           setClickedArrow(null);
         }, 5000);
+      } else if (!movingDown) {
+        //
+        setTimeout(()=> {
+          setSelectedFloor(1);
+          setMovingUp(false);
+          setClickedArrow(null);
+        }, 5000);
       } else {
+        clearTimeout(timerId);
         setMovingDown(true);
         setTimeout(()=> {
           setSelectedFloor(1);
-          setMovingDown(false);
-          setClickedArrow(null);
+          setTimeout(() => {
+            setSelectedFloor(0);
+            setMovingDown(false);
+            setClickedArrow(null);
+          }, 5000);
         }, 5000);
       }
     } else {
-      console.log("DOWN!")
-      return;
+      setMovingUp(true);
+      setTimeout(() => {
+        setSelectedFloor(2);
+        setMovingUp(false);
+        setClickedArrow(null);
+      }, 5000);
+      // console.log("DOWN ....!")
+      // setClickedArrow(null);
+      // return;
     }
   };
+
+  useEffect(() => {
+    if (clickedArrow != null) {
+      console.log("Inside: ", clickedArrow);
+      audio.play().catch((error) => console.error('Error playing audio:', error));
+    } else {
+      // Stop playing the sound when hasStarted is false
+      audio.pause();
+      audio.currentTime = 0; // Reset the audio to the beginning
+    }
+
+    // Cleanup: pause and reset the audio when the component unmounts
+    return () => {
+      audio.pause();
+      audio.currentTime = 0;
+    };
+  }, [audio, clickedArrow]);
 
   return (
     <div className="container">
@@ -113,7 +172,7 @@ function App() {
             className={`arrow-icon ${clickedArrow == 3 ? 'clicked' : ''}`}
             onClick={() => {
               handleDownArrow(2);
-              setClickedArrow(3); // arrow id
+              if (selectedFloor != 0) setClickedArrow(3); // arrow id
             }}
           />
         </div>
