@@ -1,14 +1,16 @@
 .container {
     width: 100vw;
-    height: 100vh;
+    height: 90vh;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 .elevator-container {
-    height: 700px;
+    height: 95%;
     width: 290px;
+    /* margin-top: 50px; */
+    /* margin-bottom: 50px; */
     background: rgb(209, 209, 209);
     display: flex;
     flex-direction: column;
@@ -48,7 +50,7 @@
 .arrow-container {
     /* border: 2px solid black; */
     /* border-bottom: none; */
-    height: 700px;
+    height: 95%;
     width: 100px;
     margin-left: 10px;
 }
@@ -69,10 +71,18 @@
 .arrow-icon {
     font-size: 50px;
 }
+.arrow-icon:hover {
+    cursor: pointer;
+    /* color: rgb(69, 69, 69); */
+}
 
 h3 {
     border: 3px solid beige;
     padding: 10px 20px 10px 20px;
     border-radius: 15px;
     background-color: rgb(247, 127, 42);
+}
+
+.clicked {
+    color: green;
 }

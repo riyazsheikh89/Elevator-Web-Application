@@ -6,6 +6,7 @@ function App() {
   const [selectedFloor, setSelectedFloor] = useState(0);
   const [movingUp, setMovingUp] = useState(false);
   const [movingDown, setMovingDown] = useState(false);
+  const [clickedArrow, setClickedArrow] = useState(null);
 
   const handleUpArrow = (id) => {
     // while the lift is moving DOWN, UP button should not work
@@ -19,24 +20,31 @@ function App() {
       setTimeout(()=> {
         setSelectedFloor(2);
         setMovingUp(false);
+        setClickedArrow(null);
       }, 10000);
-    } else if (id == 1 >= selectedFloor) {
+    } else if (id == 1 && id >= selectedFloor) {
       if (selectedFloor == id) {
         setMovingUp(true);
         setTimeout(() => {
           setSelectedFloor(2);
           setMovingUp(false);
+          setClickedArrow(null);
         }, 5000);
       } else {
         setMovingUp(true);
         setTimeout(()=> {
           setSelectedFloor(1);
           setMovingUp(false);
+          setClickedArrow(null);
         }, 5000);
       }
     } else {
-      console.log("UP");
-      return;
+      setMovingUp(true);
+      setTimeout(() => {
+        setSelectedFloor(0);
+        setMovingUp(false);
+        setClickedArrow(null);
+      }, 10000);
     }
     
   };
@@ -52,6 +60,7 @@ function App() {
       setTimeout(()=> {
         setSelectedFloor(0);
         setMovingDown(false);
+        setClickedArrow(null);
       }, 10000);
     } else if (id == 1 && id <= selectedFloor) {
       if (selectedFloor == id) {
@@ -59,12 +68,14 @@ function App() {
         setTimeout(()=> {
           setSelectedFloor(0);
           setMovingDown(false);
+          setClickedArrow(null);
         }, 5000);
       } else {
         setMovingDown(true);
         setTimeout(()=> {
           setSelectedFloor(1);
           setMovingDown(false);
+          setClickedArrow(null);
         }, 5000);
       }
     } else {
@@ -99,24 +110,36 @@ function App() {
       <div className="arrow-container">
         <div className="btn">
           <IoArrowDownCircleSharp
-            className="arrow-icon"
-            onClick={() => handleDownArrow(2)}
+            className={`arrow-icon ${clickedArrow == 3 ? 'clicked' : ''}`}
+            onClick={() => {
+              handleDownArrow(2);
+              setClickedArrow(3); // arrow id
+            }}
           />
         </div>
         <div className="btn first-floor_btn">
           <IoArrowUpCircleSharp
-            className="arrow-icon"
-            onClick={() => handleUpArrow(1)}
+            className={`arrow-icon ${clickedArrow == 2 ? 'clicked' : ''}`}
+            onClick={() => {
+              handleUpArrow(1);
+              setClickedArrow(2); // arrow id
+            }}
           />
           <IoArrowDownCircleSharp
-            className="arrow-icon"
-            onClick={() => handleDownArrow(1)}
+            className={`arrow-icon ${clickedArrow == 1 ? 'clicked' : ''}`}
+            onClick={() => {
+              handleDownArrow(1);
+              setClickedArrow(1); // arrow id
+            }}
           />
         </div>
         <div className="btn" id="0">
           <IoArrowUpCircleSharp
-            className="arrow-icon"
-            onClick={() => handleUpArrow(0)}
+            className={`arrow-icon ${clickedArrow == 0 ? 'clicked' : ''}`}
+            onClick={() => {
+              handleUpArrow(0);
+              setClickedArrow(0);  // arrow id
+            }}
           />
         </div>
       </div>
